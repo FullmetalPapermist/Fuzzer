@@ -2,12 +2,19 @@
 <html lang="en">
 <head>
     <title> FuzzIt! </title>
-    <link> rel="stylesheet" href="style.css"
 </head>
 
 <body>
-    <h1>Welcome to FuzzIt</h1>
-    <p>Please enter your code below</p>
+    <h1>Welcome to FuzzIt!</h1>
+    <p>Please enter your code below!</p>
+    <b><p style="font-family: Courier New">function myfunc(int) {</p></b>
+    <textarea id="function" name="function" rows="20" cols="160"></textarea>
+    <b><p style="font-family: Courier New">}</p></b>
+    <br><br>
+    <script src="control.js" type="text/javascript">
+    </script>
+    <button type="button" onclick="fuzz()">Fuzz!
+    </button>
 </body>
 
 </html>
