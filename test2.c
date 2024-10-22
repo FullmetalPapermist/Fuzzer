@@ -1,9 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define TRUE 0
-#define FALSE -1
-#define BUFF_SIZE 16
+#define TRUE 1
+#define FALSE 0
 
 int printName();
 
@@ -18,12 +17,11 @@ int main(int argv, char **argc) {
 
 int printName() {
     int isAdmin = FALSE;
-    char name[BUFF_SIZE];
+    char name[16];
 
     printf("What is your name?\n");
-
     printf("> ");
-    fgets(&name, BUFF_SIZE+1, stdin); // Size of buffer plus the null terminator
+    gets(&name);
 
     if (isAdmin == FALSE) {
         printf("Welcome, %s!\n", name);

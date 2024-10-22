@@ -7,13 +7,17 @@
 <body>
     <b><h1 style="font-family: Courier New">Welcome to FuzzIt!</h1>
     <p style="font-family: Courier New">
-        Please copy your code and paste below (in C please)!</p></b>
-    <textarea id="userIn" name="userIn" rows="20" cols="160"></textarea>
-    <br><br>
-    <script src="control.js" type="text/javascript">
-    </script>>
+        Please enter your file (in C please!):</p></b>
+    <form method="post" enctype="multipart/form-data">
+        <label for="file">File</label>
+        <input id="file" name ="cfile" type="file"></input>
+        <br></br>
+        <script src="control.js" type="text/javascript">
+        </script>>
 
-    <button type="button" style="font-family: Courier New" onclick="fuzz(userIn)">Fuzz!</button>
+        <button type="button" style="font-family: Courier New" onclick="fuzz(cfile)">Fuzz!</button>
+
+    </form>
 </body>
 
 </html>
