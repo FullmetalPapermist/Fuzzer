@@ -24,7 +24,7 @@ if __name__ == '__main__':
         if sp.poll() != 0:
             code = sp.poll()
             hexit = sp.poll().to_bytes(1, "big", signed=True)
-            print(f"Program crashed with: \nff *{payloadSize}\nExit code: {hexit} {code}")
+            print(f"Program crashed with: \nff * {payloadSize}\nExit code: {hexit} {code}")
             if out:
                 print(f"Out: {out}")
             else:
