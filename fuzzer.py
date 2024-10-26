@@ -1,7 +1,6 @@
 import subprocess
 import sys
 import os
-import tempfile
 import math
 
 def formatPayload():
@@ -59,12 +58,12 @@ def bruteForce():
     error = False
     while not error:
         for i in range(int(math.pow(256, byteNum))):
-            sp = subprocess.Popen(['./out'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.DEVNULL)
+            sp = subprocess.Popen(['./out'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
             sp.stdin.write(i.to_bytes(byteNum, "big"))
             sp.stdin.flush()
             out, err = sp.communicate()
             if sp.poll() != 0:
-                print(f"Program crashed with: \n{hex(input)}\nPayload size: {byteNum} bytes")
+                print(f"Program crashed with: \n{hex(i)}\nPayload size: {byteNum} bytes")
                 if out:
                     print(f"Out: {out}")
                 if err:
@@ -74,7 +73,7 @@ def bruteForce():
         byteNum += 1
 
 def test(bytes, byteNum):
-    sp = subprocess.Popen(['./out'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.DEVNULL)
+    sp = subprocess.Popen(['./out'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
     sp.stdin.write(bytes)
     sp.stdin.flush()
     out, err = sp.communicate()
@@ -87,11 +86,10 @@ def test(bytes, byteNum):
 
 if __name__ == '__main__':
     file = sys.argv[1]
-    tmp = tempfile.mktemp()
-    res = subprocess.run(f"clang {file} -o out", shell=True, capture_output=True, text=True)
+    res = subprocess.run(f"clang {file} -fstack-protector-all -o out", shell=True, capture_output=True, text=True)
     if res.stderr:
         print(f"Compiler warnings!!\n{res.stderr}")
-    ans = input("Fast (f), Slow (s) Format Strings (%n) or Expert (x)?\n")
+    ans = input("Fast (f), Slow (s) Format Strings (n) or Expert (x)?\n")
     if ans == "f":
         print("Fuzzing now (Please wait)!")
         fastPayload()
