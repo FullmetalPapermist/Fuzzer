@@ -59,11 +59,13 @@ def bruteForce():
     while not error:
         for i in range(int(math.pow(256, byteNum))):
             sp = subprocess.Popen(['./out'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-            sp.stdin.write(i.to_bytes(byteNum, "big"))
+            payload = i.to_bytes(byteNum, "big")
+            sp.stdin.write(payload)
             sp.stdin.flush()
             out, err = sp.communicate()
             if sp.poll() != 0:
-                print(f"Program crashed with: \n{hex(i)}\nPayload size: {byteNum} bytes")
+                byte = i.to_bytes(byteNum, "big")
+                print(f"Program crashed with: \nBytes: {hex(i)}\nString: {payload} \nPayload size: {byteNum} bytes")
                 if out:
                     print(f"Out: {out}")
                 if err:
