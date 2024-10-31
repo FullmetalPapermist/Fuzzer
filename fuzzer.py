@@ -3,7 +3,7 @@ import sys
 import os
 import math
 
-def formatPayload():
+def formatPayload(byteLimit):
     print("Format string payload incoming")
     payloadSize = 1
     while True:
@@ -24,14 +24,13 @@ def formatPayload():
                 print(f"Error: {err}")
             else:
                 print("No err")
-            break
         payloadSize += 1
 
 
-def fastPayload():
+def fastPayload(byteLimit):
     print("Fast payload incoming!")
     payloadSize = 1
-    while True:
+    while payloadSize <= byteLimit:
         sp = subprocess.Popen(['./out'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
         input = "ff" * payloadSize
         sp.stdin.write(int(input, 16).to_bytes(payloadSize, "big"))
@@ -49,30 +48,26 @@ def fastPayload():
                 print(f"Error: {err}")
             else:
                 print("No err")
-            break
         payloadSize += 1
 
-def bruteForce():
+def bruteForce(byteLimit):
     print("Brute force incoming!")
-    byteNum = 1
-    error = False
-    while not error:
-        for i in range(int(math.pow(256, byteNum))):
+    payloadSize = 1
+    while payloadSize <= byteLimit:
+        for i in range(int(math.pow(256, payloadSize))):
             sp = subprocess.Popen(['./out'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-            payload = i.to_bytes(byteNum, "big")
+            payload = i.to_bytes(payloadSize, "big")
             sp.stdin.write(payload)
             sp.stdin.flush()
             out, err = sp.communicate()
             if sp.poll() != 0:
-                byte = i.to_bytes(byteNum, "big")
-                print(f"Program crashed with: \nBytes: {hex(i)}\nString: {payload} \nPayload size: {byteNum} bytes")
+                byte = i.to_bytes(payloadSize, "big")
+                print(f"Program crashed with: \nBytes: {hex(i)}\nString: {payload} \nPayload size: {payloadSize} bytes")
                 if out:
                     print(f"Out: {out}")
                 if err:
                     print(f"Error: {err}")
-                error = True
-                break
-        byteNum += 1
+        payloadSize += 1
 
 def test(bytes, byteNum):
     sp = subprocess.Popen(['./out'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
@@ -91,20 +86,21 @@ if __name__ == '__main__':
     res = subprocess.run(f"clang {file} -fstack-protector-all -o out", shell=True, capture_output=True, text=True)
     if res.stderr:
         print(f"Compiler warnings!!\n{res.stderr}")
+    byteLimit = int(input("Insert byte limit:\n"))
     ans = input("Fast (f), Slow (s) Format Strings (n) or Expert (x)?\n")
     if ans == "f":
         print("Fuzzing now (Please wait)!")
-        fastPayload()
+        fastPayload(byteLimit)
     elif ans == "s":
         print("Fuzzing now (Please wait)!")
-        bruteForce()
+        bruteForce(byteLimit)
     elif ans == "x":
-        userIn = input("Enter input:\n")
-        buffer = input("Enter size:\n")
-        hex = int(userIn, 16).to_bytes(buffer, "big")
+        bytes = input("Enter input:\n")
+        byteSize = input("Enter size:\n")
+        test(bytes, byteSize)
     elif ans == "n":
         print("Fuzzing now (Please wait)!")
-        formatPayload()
+        formatPayload(byteLimit)
 
 
     os.remove("out")
