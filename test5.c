@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+// Multiple inputs...
+
 int main() {
     char buffer[50];
 

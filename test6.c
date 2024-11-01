@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 
+// Custom errors!
+
 int main() {
     char buffer[50];
 

@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+// Safe fgets usage and format string
+
 int main() {
    char buffer[50];
 

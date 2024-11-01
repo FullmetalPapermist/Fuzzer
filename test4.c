@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+// Dangerous format string usage!
+
 int main() {
    char buffer[50];
 
