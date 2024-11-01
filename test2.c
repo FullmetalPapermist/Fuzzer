@@ -4,6 +4,8 @@
 #define TRUE 1
 #define FALSE 0
 
+// This is the first CTF challenge! I fuzzed it and it did indeed show a security vulnerability
+
 int printName();
 
 int main(int argv, char **argc) {

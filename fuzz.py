@@ -1,13 +1,18 @@
 import math
 import sys
 import subprocess
-# for i in range(1, 256):
-#     print(int("ff" * i, 16))
+# This file is  used to test outputs to send through to the fuzzer
 
-# for power in range(1, 3):
-#     for i in range(int(math.pow(256, power))):
-#         print(i.to_bytes(power, "big"))
+# Sending ff strings to be converted into bytes!
+for i in range(1, 256):
+    print(int("ff" * i, 16))
 
+# Converting every integer betweeen 0 and 256^power into a big endian byte payload
+for power in range(1, 3):
+    for i in range(int(math.pow(256, power))):
+        print(i.to_bytes(power, "big"))
+
+# Experimenting with %n strings
 file = sys.argv[1]
 res = subprocess.run(f"clang {file} -fstack-protector-all -o out", shell=True, capture_output=True, text=True)
 if res.stderr:
